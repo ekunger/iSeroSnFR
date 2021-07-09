@@ -1,0 +1,13 @@
+-in
+	-file
+		-s  SRO_X513.pdb 
+		-extra_res_fa SRO.params
+-packing
+	-ex1
+	-ex2
+	-linmem_ig 10
+-parser
+	-protocol design.xml
+-overwrite
+-mistakes
+	-restore_pre_talaris_2013_behavior true
