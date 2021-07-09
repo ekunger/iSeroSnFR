@@ -1,0 +1,47 @@
+<ROSETTASCRIPTS>
+        <SCOREFXNS>
+	<ligand_soft_rep weights=ligand_soft_rep>
+                </ligand_soft_rep>
+		<hard_rep weights=ligand>
+                </hard_rep>
+	</SCOREFXNS>
+	<TASKOPERATIONS>
+		<DetectProteinLigandInterface name=design_interface cut1=6.0 cut2=8.0 cut3=10.0 cut4=12.0 design=1 resfile="resfile.txt"/>
+	</TASKOPERATIONS>
+        <LIGAND_AREAS>
+                <inhibitor_dock_sc chain=X cutoff=6.0 add_nbr_radius=true all_atom_mode=false/>
+                <inhibitor_final_sc chain=X cutoff=6.0 add_nbr_radius=true all_atom_mode=false/>
+                <inhibitor_final_bb chain=X cutoff=7.0 add_nbr_radius=false all_atom_mode=true  alpha_restraints=0.3/>
+        </LIGAND_AREAS>
+        <INTERFACE_BUILDERS>
+                <side_chain_for_docking ligand_areas=inhibitor_dock_sc/>
+                <side_chain_for_final ligand_areas=inhibitor_final_sc/>
+                <backbone ligand_areas=inhibitor_final_bb extension_window=3/>
+        </INTERFACE_BUILDERS>
+        <MOVEMAP_BUILDERS>
+                <docking sc_interface=side_chain_for_docking minimize_water=false/>
+                <final sc_interface=side_chain_for_final bb_interface=backbone minimize_water=false/>
+        </MOVEMAP_BUILDERS>
+	<MOVERS>
+		<FavorNativeResidue name=favor_native bonus=1.2/>
+		<ddG name=calculateDDG jump=1 per_residue_ddg=1 scorefxn=hard_rep/>
+		<PackRotamersMover name=designinterface scorefxn=hard_rep task_operations=design_interface/>
+                <Translate name=translate chain=X distribution=uniform angstroms=3 cycles=50/> 
+                <Rotate name=rotate chain=X distribution=uniform degrees=360 cycles=50/>
+                <SlideTogether name=slide_together chains=X/>
+                <HighResDocker name=high_res_docker cycles=12 repack_every_Nth=3 scorefxn=ligand_soft_rep movemap_builder=docking/>
+                <FinalMinimizer name=final scorefxn=hard_rep movemap_builder=final/>
+		<InterfaceScoreCalculator name=add_scores chains=X scorefxn=hard_rep/> 
+        </MOVERS>
+        <PROTOCOLS>
+                <Add mover_name=translate/>
+                <Add mover_name=rotate/>
+		<Add mover_name=slide_together/>
+		<Add mover_name=favor_native/>
+		<Add mover_name=designinterface/>
+		<Add mover_name=high_res_docker/>
+		<Add mover_name=calculateDDG/>
+                <Add mover_name=final/>
+                <Add mover_name=add_scores/>
+        </PROTOCOLS>
+</ROSETTASCRIPTS>
