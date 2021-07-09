@@ -63,16 +63,3 @@ ggplot(longdata3, aes(x=timesec, y=dFFs)) +
 #   ylab("deltaF/F") + xlab("Time (s)") +
 #   ggtitle("16 mM")
 
-# doubexp <- function(a, b, c, d) {
-#   a+(d*exp(-(b-longdata$timesec)))+((longdata$dFFs -a-d)*exp(-(c*x)))}
-# nlsfit <- nls(doubexp, data = longdata, start = list(a=0.25, r1=0.05, r2=0.05, b=0.22), algorithm = "port")
-
-# geom_smooth(method = "nls", formula = y ~ (m1 + m2*(1 - exp(-m3*x)) + m4*(1 - exp(-m5*x))), 
-              # method.args=list(start = list(m1=1.5, m2=2, m3=0.1, m4=2, m5=30))
-  
-
-# m1 + m2*(1 - exp(-m3*x)) + m4*(1 - exp(-m5*x))  ;
-# 
-# Where m1 is Y-intercept
-# Where m2 is ∆F1 and m3 is k1
-# Where m4 is ∆F2 and m5 is k2
