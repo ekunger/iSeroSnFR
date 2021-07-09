@@ -1,0 +1,20 @@
+-in
+	-path
+		-database ./rosetta/main/database/
+	-file
+		-extra_res_fa SRO.params
+-packing
+	-ex1
+	-ex2
+	-extrachi_cutoff 0
+	-resfile X513_6A.res 
+-out
+	-nstruct 20
+-coupled_moves
+	-mc_kt 0.6
+	-ntrials 1000
+	-initial_repack false
+	-ligand_mode true
+	-ligand_weight 2.0
+-run
+	-ignore_zero_occupancy false
